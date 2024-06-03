@@ -15,4 +15,37 @@ async function handleGenerateNewShortUrl(req, res) {
   return res.json({ id: shortID });
 }
 
-module.exports = ({ handleGenerateNewShortUrl });
+async function handleGetShortId(req, res) {
+  const shortId = req.params.shortId;
+  const entry = await URL.findOneAndUpdate(
+    {
+      shortId,
+    },
+    {
+      $push: {
+        visitHistory: {
+          timestamp: Date.now(),
+        },
+      },
+    }
+  );
+
+  res.redirect(entry.redirectURL);
+}
+
+async function handleGetAnalytics(req, res) {
+  const shortId = req.params.shortId;
+  const entry = await URL.findOne({
+    shortId,
+  });
+
+  if (!entry) return res.json({ msg: "Not found" });
+  const totalNoOfVisits = entry.visitHistory.length;
+  return res.json({ totalVisit: totalNoOfVisits });
+}
+
+module.exports = {
+  handleGenerateNewShortUrl,
+  handleGetShortId,
+  handleGetAnalytics,
+};

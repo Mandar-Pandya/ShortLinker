@@ -1,13 +1,16 @@
-const express = require('express')
-const urlRoute = require('./routes/url')
-const { connectToMongoDB } = require('./connect')
-const app = express()
-const PORT = 8001
+const express = require("express");
+const urlRoute = require("./routes/url");
+const { connectToMongoDB } = require("./connect");
+const app = express();
+const PORT = 8000;
 
-connectToMongoDB('mongodb://127.0.0.1:27017/shortLinker').then(() => console.log('connected to Db'))
+connectToMongoDB("mongodb://127.0.0.1:27017/shortLinker").then(() =>
+  console.log("connected to Db")
+);
 
-app.use('/url',urlRoute)
+app.use(express.json());
+app.use("/url", urlRoute);
 
-app.listen(() => {
-    console.log(`listening on port no ${PORT}`)
-})
+app.listen(PORT, () => {
+  console.log(`listening on port no ${PORT}`);
+});
