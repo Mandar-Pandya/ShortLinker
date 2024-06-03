@@ -29,6 +29,7 @@ async function handleGetShortId(req, res) {
       },
     }
   );
+  if (!entry) return res.json({ error: "No result found" });
 
   res.redirect(entry.redirectURL);
 }
