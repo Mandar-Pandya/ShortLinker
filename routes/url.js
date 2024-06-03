@@ -3,7 +3,7 @@ const {handleGenerateNewShorUrl} = require('../controllers/url')
 
 const router = express.Router()
 
-router.post('/',handleGenerateNewShorUrl)
+router.post('/', () => handleGenerateNewShorUrl())
 
 
 module.exports = router
