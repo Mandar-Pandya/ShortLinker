@@ -3,9 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 const { setUser } = require("../service/auth");
 
 const handleUserSignup = async (req, res) => {
-  console.log(req.body);
   const { name, email, password } = req.body;
-  console.log(req.body);
+
   await User.create({
     name,
     email,
@@ -20,16 +19,13 @@ const handleUserLogin = async (req, res) => {
     email,
     password,
   });
-  console.log(logUser);
   if (!logUser)
     res.render("login", {
       error: "Incorrect email or password",
     });
 
-  console.log(logUser);
-  const sessionId = uuidv4();
-  setUser(sessionId, logUser);
-  res.cookie("uuid", sessionId);
+  const token = setUser(logUser);
+  res.cookie("uuid", token);
   return res.redirect("/");
 };
 
